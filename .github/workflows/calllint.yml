@@ -38,7 +38,10 @@ jobs:
           name: calllint-html-report
           path: calllint.html
 
-      # The gate runs last so the alerts + report always publish first.
-      # BLOCK=30, UNKNOWN=20 per CallLint's default policy.
-      - name: Enforce policy gate
+      # Report-only here so this demo's run stays green while the risk signal
+      # shows up as Code Scanning alerts. In a real repo, delete
+      # `continue-on-error` to fail PRs on BLOCK (exit 30) / UNKNOWN (exit 20).
+      - name: Policy gate (report-only in this demo)
+        continue-on-error: true
         run: npx calllint@preview scan .cursor/mcp.json --ci --no-emoji
+

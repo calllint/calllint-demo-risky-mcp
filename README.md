@@ -37,8 +37,11 @@ Overall verdict for the config is **BLOCK** (the worst server wins).
 3. Download the **`calllint-html-report`** artifact from the workflow run for the
    full self-contained HTML report.
 
-The workflow uploads the SARIF and HTML *before* the policy gate, so the alerts
-and report are always visible even though the gate fails the run on `BLOCK`.
+The workflow uploads the SARIF and HTML *before* the policy gate. The gate step
+runs `--ci` (which exits 30 on `BLOCK`) but is **report-only here**
+(`continue-on-error: true`) so this demo's run stays green and the risk signal
+shows up as Code Scanning alerts. In your own repo, delete `continue-on-error`
+to fail PRs on `BLOCK` / `UNKNOWN`.
 
 ## Run it yourself
 
