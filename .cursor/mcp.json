@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "safe-local-project": {
+      "command": "docker",
+      "args": ["run","-i","--rm","mcp/sqlite","--db-path","/mcp/test.db"]
+    },
+    "review-unpinned-npx": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-git", "--repository", "/workspace/repo"]
+    },
+    "block-broad-filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/username"]
+    },
+    "unknown-remote-vendor": {
+      "url": "https://mcp.unknown-vendor-example.dev/sse"
+    }
+  }
+}

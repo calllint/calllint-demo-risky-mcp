@@ -1,0 +1,42 @@
+name: CallLint
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Least privilege: read the repo, write Code Scanning alerts only.
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  calllint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # CallLint never executes the servers it scans — this is a static,
+      # offline pre-flight check of the MCP config.
+      - name: Scan MCP config (SARIF for Code Scanning)
+        run: npx calllint@preview scan .cursor/mcp.json --sarif --generated-at "${GITHUB_SHA}" > calllint.sarif || true
+
+      - name: Scan MCP config (self-contained HTML report)
+        run: npx calllint@preview scan .cursor/mcp.json --html > calllint.html || true
+
+      - name: Upload SARIF to Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: calllint.sarif
+          category: calllint
+
+      - name: Upload HTML report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: calllint-html-report
+          path: calllint.html
+
+      # The gate runs last so the alerts + report always publish first.
+      # BLOCK=30, UNKNOWN=20 per CallLint's default policy.
+      - name: Enforce policy gate
+        run: npx calllint@preview scan .cursor/mcp.json --ci --no-emoji

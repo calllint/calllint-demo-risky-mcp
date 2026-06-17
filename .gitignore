@@ -1,0 +1,4 @@
+node_modules/
+calllint.sarif
+calllint.html
+.calllint/
