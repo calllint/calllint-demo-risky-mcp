@@ -18,11 +18,13 @@ jobs:
 
       # CallLint never executes the servers it scans — this is a static,
       # offline pre-flight check of the MCP config.
+      # --sarif / --html print to stdout and exit 0; only the gate step below
+      # uses --ci to fail the run. No `|| true` here — a real failure should show.
       - name: Scan MCP config (SARIF for Code Scanning)
-        run: npx calllint@preview scan .cursor/mcp.json --sarif --generated-at "${GITHUB_SHA}" > calllint.sarif || true
+        run: npx calllint@preview scan .cursor/mcp.json --sarif > calllint.sarif
 
       - name: Scan MCP config (self-contained HTML report)
-        run: npx calllint@preview scan .cursor/mcp.json --html > calllint.html || true
+        run: npx calllint@preview scan .cursor/mcp.json --html > calllint.html
 
       - name: Upload SARIF to Code Scanning
         uses: github/codeql-action/upload-sarif@v3
