@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "CallLint",
+          "informationUri": "https://calllint.com",
+          "rules": [
+            {
+              "id": "supply.unpinned-package",
+              "name": "Package version is not pinned",
+              "shortDescription": {
+                "text": "Package version is not pinned"
+              },
+              "fullDescription": {
+                "text": "The installed code can change between scans and runs, so this verdict may not match what actually executes."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "symbol": "SUPPLY",
+                "riskClass": "S1",
+                "tags": [
+                  "calllint",
+                  "supply",
+                  "s1"
+                ]
+              }
+            },
+            {
+              "id": "files.broad-path",
+              "name": "Broad local filesystem access",
+              "shortDescription": {
+                "text": "Broad local filesystem access"
+              },
+              "fullDescription": {
+                "text": "An agent-triggered tool could read private local files outside the project."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "symbol": "FILES",
+                "riskClass": "S2",
+                "tags": [
+                  "calllint",
+                  "files",
+                  "s2"
+                ]
+              }
+            },
+            {
+              "id": "supply.unknown-remote",
+              "name": "Remote server source cannot be verified",
+              "shortDescription": {
+                "text": "Remote server source cannot be verified"
+              },
+              "fullDescription": {
+                "text": "The server runs on an unverified remote endpoint. Its tools, permissions, and behavior cannot be inspected statically and may change at any time."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "symbol": "NETWORK",
+                "riskClass": "S1",
+                "tags": [
+                  "calllint",
+                  "network",
+                  "s1"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "supply.unpinned-package",
+          "level": "error",
+          "message": {
+            "text": "The installed code can change between scans and runs, so this verdict may not match what actually executes. Fix: Pin the package to an exact version, e.g. @modelcontextprotocol/server-git@1.0.0. Note: Intentional during local development, but should be pinned before autonomous or CI use."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".cursor/mcp.json"
+                }
+              },
+              "logicalLocations": [
+                {
+                  "name": "review-unpinned-npx",
+                  "kind": "namespace"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "configHash": "sha256:e408be3de84a9c4ee344ce8d4495727a2691f867fb333c4604b2e148fad187f0",
+            "riskSurfaceHash": "sha256:ad5045ac1c0db6b0fe3b75e283d1ec083583a2601b824356c215e9cc29998743"
+          },
+          "properties": {
+            "server": "review-unpinned-npx",
+            "verdict": "REVIEW",
+            "symbol": "SUPPLY",
+            "riskClass": "S1",
+            "mode": "OBSERVED",
+            "confidence": "high",
+            "blocker": false
+          }
+        },
+        {
+          "ruleId": "files.broad-path",
+          "level": "error",
+          "message": {
+            "text": "An agent-triggered tool could read private local files outside the project. Fix: Restrict filesystem access to the current workspace, e.g. ${workspaceFolder}. Note: A developer may intentionally grant broad access for a local-only experiment."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".cursor/mcp.json"
+                }
+              },
+              "logicalLocations": [
+                {
+                  "name": "block-broad-filesystem",
+                  "kind": "namespace"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "configHash": "sha256:6511674c4c24e0ade0c5948cdce09f40481dc2bd50061e3824d01d59187b2b2e",
+            "riskSurfaceHash": "sha256:3515b2e8bbe65c9d80f163a920ebf46b929df468db38211dd299341f4a69546d"
+          },
+          "properties": {
+            "server": "block-broad-filesystem",
+            "verdict": "BLOCK",
+            "symbol": "FILES",
+            "riskClass": "S2",
+            "mode": "OBSERVED",
+            "confidence": "high",
+            "blocker": true
+          }
+        },
+        {
+          "ruleId": "supply.unpinned-package",
+          "level": "error",
+          "message": {
+            "text": "The installed code can change between scans and runs, so this verdict may not match what actually executes. Fix: Pin the package to an exact version, e.g. @modelcontextprotocol/server-filesystem@1.0.0. Note: Intentional during local development, but should be pinned before autonomous or CI use."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".cursor/mcp.json"
+                }
+              },
+              "logicalLocations": [
+                {
+                  "name": "block-broad-filesystem",
+                  "kind": "namespace"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "configHash": "sha256:6511674c4c24e0ade0c5948cdce09f40481dc2bd50061e3824d01d59187b2b2e",
+            "riskSurfaceHash": "sha256:3515b2e8bbe65c9d80f163a920ebf46b929df468db38211dd299341f4a69546d"
+          },
+          "properties": {
+            "server": "block-broad-filesystem",
+            "verdict": "BLOCK",
+            "symbol": "SUPPLY",
+            "riskClass": "S1",
+            "mode": "OBSERVED",
+            "confidence": "high",
+            "blocker": false
+          }
+        },
+        {
+          "ruleId": "supply.unknown-remote",
+          "level": "error",
+          "message": {
+            "text": "The server runs on an unverified remote endpoint. Its tools, permissions, and behavior cannot be inspected statically and may change at any time. Fix: Use a verified first-party endpoint, or run the server from a pinned, inspectable package. Note: A trusted internal endpoint may be fine; add it to the policy allowlist to verify it."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".cursor/mcp.json"
+                }
+              },
+              "logicalLocations": [
+                {
+                  "name": "unknown-remote-vendor",
+                  "kind": "namespace"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "configHash": "sha256:9106d72d365256d2933135003088cccb45af181ee59e494ceee7d540b1bce199",
+            "riskSurfaceHash": "sha256:47e9d20255a346b95323c2cb9e092621521638b987bbcd036e68e4aee12dcaf3"
+          },
+          "properties": {
+            "server": "unknown-remote-vendor",
+            "verdict": "UNKNOWN",
+            "symbol": "NETWORK",
+            "riskClass": "S1",
+            "mode": "OBSERVED",
+            "confidence": "high",
+            "blocker": false
+          }
+        }
+      ],
+      "properties": {
+        "aggregateVerdict": "BLOCK",
+        "counts": {
+          "SAFE": 1,
+          "REVIEW": 1,
+          "BLOCK": 1,
+          "UNKNOWN": 1
+        },
+        "generatedAt": "2026-06-17T00:00:00.000Z"
+      }
+    }
+  ]
+}

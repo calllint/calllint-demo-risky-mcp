@@ -1,4 +1,4 @@
 node_modules/
-calllint.sarif
-calllint.html
+/calllint.sarif
+/calllint.html
 .calllint/
