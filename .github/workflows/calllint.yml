@@ -21,10 +21,10 @@ jobs:
       # --sarif / --html print to stdout and exit 0; only the gate step below
       # uses --ci to fail the run. No `|| true` here — a real failure should show.
       - name: Scan MCP config (SARIF for Code Scanning)
-        run: npx calllint@preview scan .cursor/mcp.json --sarif > calllint.sarif
+        run: npx calllint scan .cursor/mcp.json --sarif > calllint.sarif
 
       - name: Scan MCP config (self-contained HTML report)
-        run: npx calllint@preview scan .cursor/mcp.json --html > calllint.html
+        run: npx calllint scan .cursor/mcp.json --html > calllint.html
 
       - name: Upload SARIF to Code Scanning
         uses: github/codeql-action/upload-sarif@v3
@@ -43,5 +43,5 @@ jobs:
       # `continue-on-error` to fail PRs on BLOCK (exit 30) / UNKNOWN (exit 20).
       - name: Policy gate (report-only in this demo)
         continue-on-error: true
-        run: npx calllint@preview scan .cursor/mcp.json --ci --no-emoji
+        run: npx calllint scan .cursor/mcp.json --ci --no-emoji
 
