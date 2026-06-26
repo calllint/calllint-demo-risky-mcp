@@ -35,7 +35,7 @@ Overall verdict for the config is **BLOCK** (the worst server wins).
 1. Open the **Actions** tab → the `CallLint` workflow run.
 2. Open the **Security → Code scanning** tab → CallLint alerts, one per finding.
 3. Download the **`calllint-html-report`** artifact from the workflow run for the
-   full self-contained HTML report.
+ full self-contained HTML report.
 
 The workflow uploads the SARIF and HTML *before* the policy gate. The gate step
 runs `--ci` (which exits 30 on `BLOCK`) but is **report-only here**
@@ -46,10 +46,10 @@ to fail PRs on `BLOCK` / `UNKNOWN`.
 ## Run it yourself
 
 ```bash
-npx calllint@preview scan .cursor/mcp.json            # human-readable
-npx calllint@preview scan .cursor/mcp.json --sarif    # SARIF 2.1.0 to stdout
-npx calllint@preview scan .cursor/mcp.json --html     # HTML report to stdout
-npx calllint@preview scan .cursor/mcp.json --ci       # exit non-zero on BLOCK/UNKNOWN
+npx calllint scan .cursor/mcp.json            # human-readable
+npx calllint scan .cursor/mcp.json --sarif    # SARIF 2.1.0 to stdout
+npx calllint scan .cursor/mcp.json --html     # HTML report to stdout
+npx calllint scan .cursor/mcp.json --ci       # exit non-zero on BLOCK/UNKNOWN
 ```
 
 ## Limitations
